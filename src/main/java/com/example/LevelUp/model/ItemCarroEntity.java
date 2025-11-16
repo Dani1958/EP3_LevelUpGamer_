@@ -5,21 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Entity
 @Data //lombok que hace todos los getter y setter
-@Table(name = "Usuario")
+@Table(name = "items_carro")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario {
-
+public class ItemCarroEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idUsuario;
-    private String rut;
-    private String nombre;
-    private String apellido;
-    private Date fecha_nacimiento;
-    private int edad;
+    private Long idItemCarro;
+
+    @ManyToOne
+    UsuarioEntity usuario;
+
+    @ManyToOne
+    CarroComprasEntity carro;
+    int cantidad;
 }

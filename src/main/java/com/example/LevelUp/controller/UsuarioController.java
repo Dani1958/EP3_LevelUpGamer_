@@ -1,16 +1,63 @@
 package com.example.LevelUp.controller;
 
 
+import com.example.LevelUp.model.UsuarioEntity;
 import com.example.LevelUp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/v1/usuario")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @GetMapping
+    public List<UsuarioEntity> listarUsuarios() {
+        return usuarioService.findAll();
+    }
+
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioEntity> obtenerUsuario(@PathVariable Long idUsuario) {
+        UsuarioEntity usuario = usuarioService.findById(idUsuario);
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<UsuarioEntity> crearUsuario(@RequestBody UsuarioEntity usuario) {
+        try {
+            UsuarioEntity creado = usuarioService.save(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+        } catch (IllegalArgumentException e) {
+            // validación de edad y descuento Duoc
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioEntity> actualizarUsuario(@PathVariable Long idUsuario,
+                                                           @RequestBody UsuarioEntity usuario) {
+        try {
+            UsuarioEntity actualizado = usuarioService.update(idUsuario, usuario);
+            return ResponseEntity.ok(actualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{idUsuario}")
+    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long idUsuario) {
+        usuarioService.delete(idUsuario);
+        return ResponseEntity.noContent().build();
+    }
 
 }
