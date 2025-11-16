@@ -12,6 +12,14 @@ public class AdministradorService {
     @Autowired
     private AdministradorRepository adminRepository;
 
+    public AdministradorEntity autenticar(String nombre, String password) {
+        AdministradorEntity admin = adminRepository.findByNombre(nombre);
+        if (admin != null && admin.getPassword().equals(password)) {
+            return admin;
+        }
+        return null;
+    }
+
     public AdministradorEntity save(AdministradorEntity admin) {
         return adminRepository.save(admin);
     }

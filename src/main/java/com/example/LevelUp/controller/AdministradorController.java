@@ -1,10 +1,14 @@
 package com.example.LevelUp.controller;
 
 import com.example.LevelUp.model.AdministradorEntity;
+import com.example.LevelUp.model.JwtResponse;
+import com.example.LevelUp.model.LoginRequest;
+import com.example.LevelUp.security.JwtUtil;
 import com.example.LevelUp.service.AdministradorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +18,24 @@ import java.util.List;
 public class AdministradorController {
     @Autowired
     private AdministradorService administradorService;
+    private JwtUtil jwtUtil;
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/privado")
+    public String soloAdmin() {
+        return "Vista exclusiva para administradores!";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        AdministradorEntity admin = administradorService.autenticar(loginRequest.getNombre(), loginRequest.getPassword());
+        if (admin != null) {
+            String token = jwtUtil.generateToken(admin);
+            return ResponseEntity.ok(new JwtResponse(token));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 
     @GetMapping
     public List<AdministradorEntity> listarAdministradores() {

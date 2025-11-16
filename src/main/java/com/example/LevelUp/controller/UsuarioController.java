@@ -1,11 +1,15 @@
 package com.example.LevelUp.controller;
 
 
+import com.example.LevelUp.model.JwtResponse;
+import com.example.LevelUp.model.LoginRequest;
 import com.example.LevelUp.model.UsuarioEntity;
+import com.example.LevelUp.security.JwtUtil;
 import com.example.LevelUp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +20,25 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    private JwtUtil jwtUtil;
+    private LoginRequest loginRequest;
+
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/privado")
+    public String solouSER() {
+        return "Vista exclusiva para usuarios!";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        UsuarioEntity usuario = usuarioService.autenticar(loginRequest.getCorreo(), loginRequest.getPassword());
+        if (usuario != null) {
+            String token = jwtUtil.generateToken(usuario);
+            return ResponseEntity.ok(new JwtResponse(token));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 
     @GetMapping
     public List<UsuarioEntity> listarUsuarios() {

@@ -22,4 +22,6 @@ public class AdministradorEntity {
     private String apellido;
     private Date fecha_nacimiento;
     private int edad;
+    private String password;
+    private String rol;
 }

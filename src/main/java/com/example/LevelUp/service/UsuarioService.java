@@ -16,6 +16,14 @@ public class UsuarioService {
     @Autowired //inyectar una dependecia
     private UsuarioRepository usuarioRepository;
 
+    public UsuarioEntity autenticar(String correo, String password) {
+        UsuarioEntity usuario = usuarioRepository.findByCorreo(correo);
+        if (usuario != null && usuario.getPassword().equals(password)) {
+            return usuario;
+        }
+        return null;
+    }
+
     public List<UsuarioEntity> findAll(){ return usuarioRepository.findAll(); }
 
     public UsuarioEntity findById(Long idUsuario) {

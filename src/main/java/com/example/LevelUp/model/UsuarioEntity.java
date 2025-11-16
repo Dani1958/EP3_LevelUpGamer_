@@ -24,4 +24,6 @@ public class UsuarioEntity {
     private int edad;
     private String correo;
     private boolean descuentoDuoc;
+    private String password;
+    private String rol;
 }
