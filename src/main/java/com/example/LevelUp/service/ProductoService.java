@@ -49,4 +49,8 @@ public class ProductoService {
     public List<ProductoEntity> findByMarca(String marca) {
         return productoRepository.findByMarca(marca);
     }
+
+    public void saveAll(List<ProductoEntity> productos) {
+        productoRepository.saveAll(productos);
+    }
 }

@@ -64,4 +64,11 @@ public class ProductoController {
     public List<ProductoEntity> productosPorMarca(@PathVariable String marca) {
         return productoService.findByMarca(marca);
     }
+
+    // Carga masiva de productos
+    @PostMapping("/bulk")
+    public ResponseEntity<Void> cargarProductosBulk(@RequestBody List<ProductoEntity> productos) {
+        productoService.saveAll(productos);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }

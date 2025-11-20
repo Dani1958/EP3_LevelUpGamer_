@@ -21,10 +21,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/auth/**", "/register").permitAll() // Endpoints públicos para login y registro
-                        .requestMatchers(HttpMethod.GET, "/productos/**").permitAll() // Permitir ver productos sin login
+                        .requestMatchers(HttpMethod.GET, "/api/v1/producto/**").permitAll() // Permitir ver productos sin login
+                        .requestMatchers(HttpMethod.POST, "/api/v1/producto/bulk").permitAll() // <--- Esta línea es clave
+                        .requestMatchers(HttpMethod.POST, "/api/v1/producto").permitAll() // Opcional, para crear por POST normal
                         .requestMatchers("/usuarios/**").hasRole("USER")  // Sólo usuarios logueados
                         .requestMatchers("/administradores/**").hasRole("ADMIN") // Sólo admin
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
         // Debes agregar el filtro JWT aquí si lo implementas
         return http.build();
