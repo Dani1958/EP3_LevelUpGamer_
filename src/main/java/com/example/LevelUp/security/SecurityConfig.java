@@ -24,6 +24,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/producto/**").permitAll() // Permitir ver productos sin login
                         .requestMatchers(HttpMethod.POST, "/api/v1/producto/bulk").permitAll() // <--- Esta línea es clave
                         .requestMatchers(HttpMethod.POST, "/api/v1/producto").permitAll() // Opcional, para crear por POST normal
+                        .requestMatchers(HttpMethod.GET, "/api/v1/noticia/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/noticia/bulk").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/evento/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/evento/bulk").permitAll()
                         .requestMatchers("/usuarios/**").hasRole("USER")  // Sólo usuarios logueados
                         .requestMatchers("/administradores/**").hasRole("ADMIN") // Sólo admin
                         .anyRequest().permitAll()
