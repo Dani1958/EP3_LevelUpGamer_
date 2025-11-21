@@ -18,10 +18,8 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idUsuario;
     private String rut;
-    private String nombre;
-    private String apellido;
+    private String nombre_completo;
     private LocalDate fecha_nacimiento;
-    private int edad;
     private String correo;
     private boolean descuentoDuoc;
     private String password;

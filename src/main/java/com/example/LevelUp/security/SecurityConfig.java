@@ -17,22 +17,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {}) // Usa la configuración por defecto o define un bean CorsConfigurationSource
+                .cors(cors -> {})
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/auth/**", "/register").permitAll() // Endpoints públicos para login y registro
-                        .requestMatchers(HttpMethod.GET, "/api/v1/producto/**").permitAll() // Permitir ver productos sin login
-                        .requestMatchers(HttpMethod.POST, "/api/v1/producto/bulk").permitAll() // <--- Esta línea es clave
-                        .requestMatchers(HttpMethod.POST, "/api/v1/producto").permitAll() // Opcional, para crear por POST normal
-                        .requestMatchers(HttpMethod.GET, "/api/v1/noticia/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/noticia/bulk").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/evento/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/evento/bulk").permitAll()
-                        .requestMatchers("/usuarios/**").hasRole("USER")  // Sólo usuarios logueados
-                        .requestMatchers("/administradores/**").hasRole("ADMIN") // Sólo admin
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(HttpMethod.POST, "/api/v1/administrador").permitAll()
+                        // Permitidos sin login (ajusta según tus rutas reales de login/registro)
+                        .requestMatchers("/api/v1/usuario/login", "/api/v1/usuario", "/api/v1/administrador/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/producto/**").permitAll()
+                        // Permisos solo admin para manipular productos
+                        .requestMatchers(HttpMethod.POST, "/api/v1/producto/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/producto/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/producto/**").hasAuthority("ADMIN")
+                        // Acceso usuario/administrador a sus rutas
+                        .requestMatchers("/api/v1/usuario/privado").hasAuthority("USER")
+                        .requestMatchers("/api/v1/usuario/*").hasAuthority("USER")
+                        .requestMatchers("/api/v1/administrador/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll()
                 );
-        // Debes agregar el filtro JWT aquí si lo implementas
+        // Aquí deberías añadir tu filtro JWT si tienes uno
         return http.build();
     }
 }

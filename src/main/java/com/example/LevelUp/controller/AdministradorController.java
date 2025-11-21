@@ -31,7 +31,7 @@ public class AdministradorController {
         AdministradorEntity admin = administradorService.autenticar(loginRequest.getNombre(), loginRequest.getPassword());
         if (admin != null) {
             String token = jwtUtil.generateToken(admin);
-            return ResponseEntity.ok(new JwtResponse(token));
+            return ResponseEntity.ok(new JwtResponse(token, "ADMIN", admin));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -54,6 +54,7 @@ public class AdministradorController {
 
     @PostMapping
     public ResponseEntity<AdministradorEntity> crearAdministrador(@RequestBody AdministradorEntity admin) {
+        admin.setRol("ADMIN");
         AdministradorEntity creado = administradorService.save(admin);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }

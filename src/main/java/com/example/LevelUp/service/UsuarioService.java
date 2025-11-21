@@ -64,7 +64,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("El usuario debe ser amyor de 18 años.");
         }
         //Actualizar cambios
-        existente.setNombre(newUser.getNombre());
+        existente.setNombre_completo(newUser.getNombre_completo());
         existente.setCorreo(newUser.getCorreo());
         existente.setFecha_nacimiento(newUser.getFecha_nacimiento());
 
