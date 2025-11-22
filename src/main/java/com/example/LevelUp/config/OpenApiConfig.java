@@ -29,7 +29,7 @@ public class OpenApiConfig {
                         .title("LevelUp Gaming Store API")
                         .version("2.0.0")
                         .description("API REST para la tienda de productos gaming LevelUp. " +
-                                "Incluye gestiÃ³n de productos, usuarios, carrito de compras y pedidos.")
+                                "Incluye gestion de productos, usuarios, carrito de compras y pedidos.")
                         .contact(new Contact()
                                 .name("Equipo LevelUp")
                                 .email("soporte@levelup.com")

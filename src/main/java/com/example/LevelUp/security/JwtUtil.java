@@ -23,7 +23,7 @@ public class JwtUtil {
     public String generateToken(UsuarioEntity usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getCorreo())
-                .claim("rol", usuario.getRol())
+                .claim("rol", "USER")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
@@ -33,7 +33,7 @@ public class JwtUtil {
     public String generateToken(AdministradorEntity admin) {
         return Jwts.builder()
                 .setSubject(admin.getNombre())
-                .claim("rol", admin.getRol()) // Guardas el rol en el JWT
+                .claim("rol", "ADMIN") // Guardas el rol en el JWT
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)

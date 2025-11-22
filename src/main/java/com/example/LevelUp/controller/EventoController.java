@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/evento")
-@CrossOrigin(origins = "*") // Para desarrollo, ajusta según necesites
 public class EventoController {
 
     @Autowired
