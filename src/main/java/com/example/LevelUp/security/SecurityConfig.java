@@ -25,9 +25,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/usuario/login", "/api/v1/usuario", "/api/v1/administrador/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/producto/**").permitAll()
                         // Permisos solo admin para manipular productos
-                        .requestMatchers(HttpMethod.POST, "/api/v1/producto/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/producto/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/producto/**").hasAuthority("ADMIN")
+                        //.requestMatchers(HttpMethod.POST, "/api/v1/producto/**").hasAuthority("ADMIN")
+                        //.requestMatchers(HttpMethod.PUT, "/api/v1/producto/**").hasAuthority("ADMIN")
+                        //.requestMatchers(HttpMethod.DELETE, "/api/v1/producto/**").hasAuthority("ADMIN")
                         // Acceso usuario/administrador a sus rutas
                         .requestMatchers("/api/v1/usuario/privado").hasAuthority("USER")
                         .requestMatchers("/api/v1/usuario/*").hasAuthority("USER")
