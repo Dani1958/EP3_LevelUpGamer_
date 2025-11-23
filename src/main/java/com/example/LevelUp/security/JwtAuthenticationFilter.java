@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     private final JwtUtil jwtUtil;
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
@@ -21,16 +20,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.replace("Bearer ", "");
             try {
-                String rol = jwtUtil.extractRol(token); // "ADMIN" o "USER"
+                String rol = jwtUtil.extractRol(token); // Debe imprimir "ADMIN" o "USER"
                 System.out.println("Rol JWT extraído: " + rol);
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol);
                 UsernamePasswordAuthenticationToken authentication =
@@ -44,3 +41,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+
