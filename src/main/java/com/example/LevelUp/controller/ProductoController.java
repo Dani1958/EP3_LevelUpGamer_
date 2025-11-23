@@ -1,11 +1,13 @@
 package com.example.LevelUp.controller;
 
+import com.example.LevelUp.model.CartItemDTO;
 import com.example.LevelUp.model.ProductoEntity;
 import com.example.LevelUp.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,6 +87,7 @@ public class ProductoController {
     public ResponseEntity<ProductoEntity> actualizarProducto(@PathVariable Long idProducto,
                                                             @RequestBody ProductoEntity productoNuevo) {
         try {
+            System.out.println("Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             ProductoEntity actualizado = productoService.update(idProducto, productoNuevo);
             return ResponseEntity.ok(actualizado);
         } catch (IllegalArgumentException e) {
@@ -92,9 +95,10 @@ public class ProductoController {
         }
     }
 
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{idProducto}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long idProducto) {
+        System.out.println("Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         productoService.delete(idProducto);
         return ResponseEntity.noContent().build();
     }
@@ -115,4 +119,19 @@ public class ProductoController {
         productoService.saveAll(productos);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PostMapping("/descontar-stock")
+    public ResponseEntity<?> descontarStock(@RequestBody List<CartItemDTO> items) {
+        for (CartItemDTO item : items) {
+            System.out.println("idProducto = " + item.getIdProducto() + ", cantidad = " + item.getCantidad());
+            boolean exito = productoService.descontarStock(item.getIdProducto(), item.getCantidad());
+            if (!exito) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("No hay stock suficiente para el producto ID: " + item.getIdProducto());
+            }
+        }
+        return ResponseEntity.ok("Stock descontado exitosamente");
+    }
+
+
 }

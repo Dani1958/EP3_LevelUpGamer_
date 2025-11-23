@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductoService {
@@ -52,5 +53,20 @@ public class ProductoService {
 
     public void saveAll(List<ProductoEntity> productos) {
         productoRepository.saveAll(productos);
+    }
+
+    public boolean descontarStock(Long idProducto, int cantidad) {
+        Optional<ProductoEntity> optional = productoRepository.findById(idProducto);
+        if (optional.isPresent()) {
+            ProductoEntity producto = optional.get();
+            int stockActual = producto.getStock();
+            if (stockActual < cantidad) {
+                return false; // no hay stock suficiente
+            }
+            producto.setStock(stockActual - cantidad);
+            productoRepository.save(producto);
+            return true;
+        }
+        return false; // producto no encontrado
     }
 }

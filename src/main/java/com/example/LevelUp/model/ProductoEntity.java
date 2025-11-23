@@ -14,7 +14,7 @@ public class ProductoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long idProducto;
-    private String nombre;
+    private String nombre; 
     private String descripcion;
     private Boolean envioGratis;
     private double precio;

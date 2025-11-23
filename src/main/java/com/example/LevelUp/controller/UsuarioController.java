@@ -1,6 +1,7 @@
 package com.example.LevelUp.controller;
 
 
+import com.example.LevelUp.model.AdminInfoDTO;
 import com.example.LevelUp.model.AdministradorEntity;
 import com.example.LevelUp.model.JwtResponse;
 import com.example.LevelUp.model.LoginRequest;
@@ -45,6 +46,7 @@ public class UsuarioController {
         AdministradorEntity admin = administradorService.autenticar(loginRequest.getCorreo(), loginRequest.getPassword());
         if (admin != null) {
             String token = jwtUtil.generateToken(admin);
+            AdminInfoDTO adminDto = new AdminInfoDTO(admin);
             return ResponseEntity.ok(new JwtResponse(token, "ADMIN", admin));
         }
         // Credenciales inválidas
