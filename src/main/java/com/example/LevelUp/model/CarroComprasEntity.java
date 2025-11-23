@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data //lombok que hace todos los getter y setter
+@Data
 @Table(name = "carro_compras")
 @AllArgsConstructor
 @NoArgsConstructor

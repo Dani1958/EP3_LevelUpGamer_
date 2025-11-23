@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data //lombok que hace todos los getter y setter
+@Data
 @Table(name = "items_carro")
 @AllArgsConstructor
 @NoArgsConstructor

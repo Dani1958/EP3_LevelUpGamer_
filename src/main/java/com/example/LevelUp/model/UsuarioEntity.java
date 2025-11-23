@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Data //lombok que hace todos los getter y setter
+@Data
 @Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
