@@ -30,7 +30,6 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/api/v1/usuario/login", "/api/v1/usuario", "/api/v1/administrador/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/producto/**").permitAll()
-                // PROTECCIÓN ADMIN
                 .requestMatchers(HttpMethod.POST, "/api/v1/producto/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/producto/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/producto/**").hasAuthority("ADMIN")

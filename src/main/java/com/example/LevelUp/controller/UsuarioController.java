@@ -36,30 +36,22 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        // Primero intenta autenticar como usuario
+        
         UsuarioEntity usuario = usuarioService.autenticar(loginRequest.getCorreo(), loginRequest.getPassword());
         if (usuario != null) {
             String token = jwtUtil.generateToken(usuario);
             return ResponseEntity.ok(new JwtResponse(token, "USER", usuario));
         }
-        // Si no es usuario, intenta como administrador (por "correo" o "nombre" según tu modelo)
         AdministradorEntity admin = administradorService.autenticar(loginRequest.getCorreo(), loginRequest.getPassword());
         if (admin != null) {
             String token = jwtUtil.generateToken(admin);
             AdminInfoDTO adminDto = new AdminInfoDTO(admin);
             return ResponseEntity.ok(new JwtResponse(token, "ADMIN", admin));
         }
-        // Credenciales inválidas
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
     }
 
-
-    @GetMapping
-    public List<UsuarioEntity> listarUsuarios() {
-        return usuarioService.findAll();
-    }
-
-    @GetMapping("/{idUsuario}")
+@GetMapping("/{idUsuario}")
     public ResponseEntity<UsuarioEntity> obtenerUsuario(@PathVariable Long idUsuario) {
         UsuarioEntity usuario = usuarioService.findById(idUsuario);
         if (usuario != null) {
@@ -69,6 +61,11 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping
+    public List<UsuarioEntity> listarUsuarios() {
+        return usuarioService.findAll();
+    }
+
     @PostMapping
     public ResponseEntity<UsuarioEntity> crearUsuario(@RequestBody UsuarioEntity usuario) {
         try {
@@ -76,7 +73,6 @@ public class UsuarioController {
             UsuarioEntity creado = usuarioService.save(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body(creado);
         } catch (IllegalArgumentException e) {
-            // validación de edad y descuento Duoc
             return ResponseEntity.badRequest().build();
         }
     }

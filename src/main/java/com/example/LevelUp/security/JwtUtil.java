@@ -18,7 +18,7 @@ import javax.crypto.SecretKey;
 @Component
 public class JwtUtil {
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private final long EXPIRATION_TIME = 86400000; // 24h
+    private final long EXPIRATION_TIME = 86400000; 
 
     public String generateToken(UsuarioEntity usuario) {
         return Jwts.builder()
@@ -33,14 +33,13 @@ public class JwtUtil {
     public String generateToken(AdministradorEntity admin) {
         return Jwts.builder()
                 .setSubject(admin.getNombre())
-                .claim("rol", admin.getRol()) // Guardas el rol en el JWT
+                .claim("rol", admin.getRol()) 
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
 
-    // Utilidad para validar y obtener claims del token
     public Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }

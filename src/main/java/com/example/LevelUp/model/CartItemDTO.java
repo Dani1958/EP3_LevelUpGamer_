@@ -4,7 +4,7 @@ public class CartItemDTO {
     private Long idProducto;
     private int cantidad;
 
-    public CartItemDTO() {} // Constructor vacío requerido por Spring
+    public CartItemDTO() {} 
 
     public Long getIdProducto() {
         return idProducto;

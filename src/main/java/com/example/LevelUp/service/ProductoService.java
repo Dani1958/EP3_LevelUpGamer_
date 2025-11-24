@@ -61,12 +61,12 @@ public class ProductoService {
             ProductoEntity producto = optional.get();
             int stockActual = producto.getStock();
             if (stockActual < cantidad) {
-                return false; // no hay stock suficiente
+                return false;
             }
             producto.setStock(stockActual - cantidad);
             productoRepository.save(producto);
             return true;
         }
-        return false; // producto no encontrado
+        return false; 
     }
 }

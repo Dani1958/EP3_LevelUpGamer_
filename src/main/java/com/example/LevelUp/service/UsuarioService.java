@@ -13,7 +13,7 @@ import com.example.LevelUp.repository.UsuarioRepository;
 @Service
 public class UsuarioService {
 
-    @Autowired //inyectar una dependecia
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     public UsuarioEntity autenticar(String correo, String password) {
@@ -31,24 +31,19 @@ public class UsuarioService {
         return usuarioRepository.findById(idUsuario).orElse(null);
     }
 
-    //para validar la edad
     private boolean esMayorDeEdad(LocalDate fecha_nacimiento) {
         return Period.between(fecha_nacimiento, LocalDate.now()).getYears() >=18;
     }
 
-    //VALIDACIONES de reglas de negocio
     public UsuarioEntity save(UsuarioEntity user) {
-        //Validar edad mayor a 18
         if (!esMayorDeEdad(user.getFecha_nacimiento())) {
             throw new IllegalArgumentException("El usuario debe ser mayor de 18 años.");
         }
-        // Aplicar descuento si es de Duoc (booleano)
         if(user.getCorreo().endsWith("@duocuc.cl")) {
             user.setDescuentoDuoc(true);
         } else {
             user.setDescuentoDuoc(false);
         }
-        //guardar usuario
         return usuarioRepository.save(user);
     }
 
@@ -63,7 +58,6 @@ public class UsuarioService {
         if (!esMayorDeEdad(existente.getFecha_nacimiento())) {
             throw new IllegalArgumentException("El usuario debe ser amyor de 18 años.");
         }
-        //Actualizar cambios
         existente.setNombre_completo(newUser.getNombre_completo());
         existente.setCorreo(newUser.getCorreo());
         existente.setFecha_nacimiento(newUser.getFecha_nacimiento());

@@ -27,13 +27,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.replace("Bearer ", "");
             try {
-                String rol = jwtUtil.extractRol(token); // Debe imprimir "ADMIN" o "USER"
-                System.out.println("Rol JWT extraído: " + rol);
+                String rol = jwtUtil.extractRol(token); 
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(null, null, Collections.singletonList(authority));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                System.out.println("Authorities en contexto: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             } catch (Exception e) {
                 SecurityContextHolder.clearContext();
             }

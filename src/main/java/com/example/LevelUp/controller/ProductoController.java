@@ -38,8 +38,6 @@ public class ProductoController {
         }
     }
 
-    // === MÉTODO MODIFICADO PARA CREAR PRODUCTO CON IMAGEN ===
-    
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ProductoEntity> crearProducto(
@@ -63,7 +61,6 @@ public class ProductoController {
         producto.setEnvioGratis(envioGratis);
         producto.setJuego(juego);
 
-        // Guardar imagen
         if (imagenFile != null && !imagenFile.isEmpty()) {
             try {
                 String fileName = System.currentTimeMillis() + "_" + imagenFile.getOriginalFilename();
@@ -79,9 +76,6 @@ public class ProductoController {
         ProductoEntity creado = productoService.save(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
-
-
-    // === RESTO DE MÉTODOS IGUAL ===
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{idProducto}")
