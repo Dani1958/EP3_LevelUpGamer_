@@ -39,6 +39,7 @@ public class ProductoController {
     }
 
     // === MÉTODO MODIFICADO PARA CREAR PRODUCTO CON IMAGEN ===
+    
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ProductoEntity> crearProducto(
